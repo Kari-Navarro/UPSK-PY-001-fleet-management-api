@@ -23,7 +23,7 @@ def taxi_list(request):
     })
 
 def trajectories_list(request):
-    list_trajectories = Trajectories.objects.all()
+    list_trajectories = Trajectories.objects.all().order_by('taxi_id')
     page_size = 15
     paginator = Paginator(list_trajectories, page_size)
     page_number = request.GET.get('page')
@@ -39,9 +39,9 @@ def trajectories_list(request):
 
 def trajectories_ID(request):
     taxi_id = request.GET.get('taxi_id')
-    if not taxi_id:
-        return JsonResponse({'Error':'Proporiciona el ID del taxi'}, status=400)#mala solicitud del cliente
-    trajectoriesid= Trajectories.objects.filter(taxi_id=taxi_id)
+    #if not taxi_id:
+    #    return JsonResponse({'Error':'Proporiciona el ID del taxi'}, status=400)#mala solicitud del cliente
+    trajectoriesid= Trajectories.objects.filter(taxi_id=taxi_id).order_by('taxi_id')
     page_size = 15
     paginator = Paginator(trajectoriesid, page_size)
     page_number = request.GET.get('page')
