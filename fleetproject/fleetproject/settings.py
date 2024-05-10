@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'fleet', #nombre de mi app porque puse startapp en el comando
-    
-]
+    'drf_yasg']
 
 
 

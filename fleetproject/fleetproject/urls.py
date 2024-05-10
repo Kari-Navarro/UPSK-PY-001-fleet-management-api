@@ -16,20 +16,32 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from fleet.views import ListTaxis
-from fleet.views import ListTrajectories
-from fleet.views import ListTrajectoriesByID
-from fleet.views import ListTrajectoriesPlate
+from fleet.views import taxi_list, trajectories_list, trajectories_ID
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
 
 
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Fleet Management",
+      default_version="openapi_3_0",
+      description="Documentación de la aplicación de Fleet",
+      terms_of_service="https://www.google.com/policies/terms/",
+      contact=openapi.Contact(email="contact@snippets.local"),
+      license=openapi.License(name="BSD License"),
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('taxis/', ListTaxis.as_view(), name='taxi_list'),
-    #path('taxi/id', views.detaalle de los taxis individuales)
-    # endpoint tiene que ser id de taxi y la fecha  y paginacio
-    path('trajectories/', ListTrajectories.as_view(), name='trajectories_list' ),
-    path('trajectories/taxi_id/', ListTrajectoriesByID.as_view(), name='trajectories_id'),
-    path('plate/', ListTrajectoriesPlate.as_view(), name='plate'),
+    path('taxis/', taxi_list, name='taxi_list'),
+    path('trajectories/', trajectories_list, name='trajectories_list' ),
+    path('trajectories/taxi_id/', trajectories_ID, name='trajectories_id'),
+    path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'), #json view
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     ]
